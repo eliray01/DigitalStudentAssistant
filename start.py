@@ -1,0 +1,1 @@
+from sweeter import app

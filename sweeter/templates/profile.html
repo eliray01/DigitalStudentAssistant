@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile Page{% endblock %}
+{% block content %}
+<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename='styles/profile.css')}}">
+<h1 class="gpd-header">Profile
+</h1>
+<div class="gpd-text">Basic Information
+</div>
+<div class="gpd-box">
+    <img id="ihb3o" src="https://cdn.grapedrop.com/u7b49bbee5efb496e8a6c24a4c29cc5fa/9da819ccd6fe46c0b3db68f0df14a4e2_kukarkins_136984984_265415734914633_2534852052060919357_n.jpg"/>
+    <div class="gpd-text">
+        <div data-cke-filler-webkit="start" data-cke-temp="1" style="display: block; width: 0px; height: 0px; padding: 0px; border: 0px; margin: 0px; position: absolute; top: 0px; left: -9999px; opacity: 0; overflow: hidden;">&nbsp;
+        </div>Name Surname
+        <u>
+        </u>
+        <div data-cke-filler-webkit="end" data-cke-temp="1" style="display: block; width: 0px; height: 0px; padding: 0px; border: 0px; margin: 0px; position: absolute; top: 0px; left: -9999px; opacity: 0; overflow: hidden;">&nbsp;
+        </div>
+    </div>
+</div>
+<form method="post" class="form">
+    <div class="form-group">
+        <label class="label">Faculty</label>
+        <input type="text" placeholder="" name="" class="input"/>
+    </div>
+    <div class="form-group">
+        <label class="label">Program</label>
+        <input type="email" placeholder="" name="" class="input"/>
+    </div>
+    <div class="form-group">
+        <label class="label">Year of studying</label>
+        <select type="text" name="options" class="select"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+    </div>
+    <div class="form-group">
+        <label class="label">Choose your preferences</label>
+        <div class="form-group">
+            <label class="label"></label>
+            <select type="text" name="options" class="select"><option value="1">Finance</option><option value="2">Crypto</option><option value="3">NFT</option></select>
+        </div>
+        <div class="form-group">
+            <button type="button" id="ishlk" class="button">Add your own</button>
+        </div>
+    </div>
+    <div data-form-state="success" class="state-success" id="i783u">Thanks! We received your request
+    </div>
+    <div data-form-state="error" class="state-error" id="ixh2h">An error occurred on processing your request, try again!
+    </div>
+</form>
+{% endblock %}
