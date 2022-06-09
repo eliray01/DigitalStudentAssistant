@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
-from app.forms import LoginForm
+from app.forms import LoginForm, AddProjectForm, ContactForm
 from flask_login import current_user, login_user
-from app.models import User
+from app.models import User, Project
 from flask_login import logout_user
 from flask_login import login_required
 from flask import request
@@ -12,23 +12,11 @@ from app.forms import RegistrationForm
 from datetime import datetime
 from app.forms import EditProfileForm
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    posts = [ # список выдуманных постов
-        {
-            'author': { 'nickname': 'John' },
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': { 'nickname': 'Susan' },
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template("index.html",
-        title = 'Home',
-        posts = posts)
+    return render_template("index.html",title = 'Home')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -36,7 +24,7 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -58,7 +46,7 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(username=form.username.data, email=form.email.data, usertype = form.usertype.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -66,15 +54,13 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/user/<username>')
+@app.route('/user/<username>', methods=['GET', 'POST'])
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    return render_template('user.html', user=user, posts=posts)
+    projects = user.projects
+    return render_template('user.html', user=user, projects = projects)
+
 
 @app.before_request
 def before_request():
@@ -89,12 +75,41 @@ def edit_profile():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
+        current_user.preferences = form.preferences.data
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
+        form.preferences.data = current_user.preferences
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
+@app.route('/add_project', methods=['GET', 'POST'])
+@login_required
+def add_project():
+    form = AddProjectForm()
+    if form.validate_on_submit():
+        project = Project(title=form.title.data, body=form.body.data, type=form.type.data, view = form.view.data, max_students = form.max_students.data)
+        current_user.projects.append(project)
+        current_user.accepted = 'yes'
+        db.session.add(project)
+        db.session.commit()
+        flash('Congratulations, you are added a new project!')
+        return redirect(url_for('add_project'))
+    return render_template('add_project.html', title='Add Project', form=form)
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    if form.validate_on_submit():
+        if form.submit.data:
+            pass
+        elif form.submit2.data:
+            pass
+    return render_template('contact.html', form=form)
+
+
+
 

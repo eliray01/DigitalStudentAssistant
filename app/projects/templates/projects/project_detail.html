@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{project.title}}
+
+{% endblock %}
+
+{% block content %}
+  <h2>{{project.title}}</h2><br>
+  <p>Project <a href= {{project.body}} >Describe</a></p>
+  {{ project.type }}<br>
+  {{ project.view }}<br>
+  {{ project.current_number_of_students}}<br>
+  {{ project.max_students }}<br>
+  {{ project.name }}<br>
+  Current team:
+  <div class="users">
+    {% for user in users %}
+
+    <a href="{{ url_for('user', username=user.username) }}"> {{user.username}}</a>
+    {% if user.usertype == "Teacher"%}
+      <span class="badge rounded-pill text-bg-primary">{{user.usertype}}</span> <br>
+    {% else %}
+      <span class="badge rounded-pill text-bg-light">{{user.usertype}}</span> <br>
+    {% endif %}
+      {% endfor %}
+  </div>
+
+<form method="post">
+  <input type="submit" value="Apply" name="Apply"/>
+  <input type="submit" value="Remove" name="Remove" />
+</form>
+
+<div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+</div>
+{% endblock %}
