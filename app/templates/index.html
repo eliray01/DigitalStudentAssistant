@@ -5,20 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<h1>Hi, {{ current_user.username }}!</h1>
-
-<nav aria-label="...">
-    <ul class="pager">
-        <li class="previous{% if not prev_url %} disabled{% endif %}">
-            <a href="{{ prev_url or '#' }}">
-                <span aria-hidden="true">&larr;</span> Newer Projects
-            </a>
-        </li>
-        <li class="next{% if not next_url %} disabled{% endif %}">
-            <a href="{{ next_url or '#' }}">
-                Older Projects <span aria-hidden="true">&rarr;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+<h1><p class="text-center">{{ current_user.username }}</p></h1>
+<p class="text-center">Welcome to our Digital Student Assistant app</p>
+<p class="text-center">You can see all available projects in the Projects section</p>
+<p class="text-center">Your projects are available to you in the Profile section</p>
+<p class="text-center">We will recommend you the projects that we think will best suit you. To get started, fill out the Academic preferences section in your profile</p>
 {% endblock %}
